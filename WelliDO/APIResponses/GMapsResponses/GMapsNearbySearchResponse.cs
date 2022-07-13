@@ -1,8 +1,7 @@
-﻿namespace WelliDO.APIResponses
+﻿namespace WelliDO.APIResponses.GMapsResponses
 {
-    public class GMapsResponseNearbySearch
-    {
-        public class NearbySearch
+    
+        public class GMapsNearbySearchResponse
         {
             public object[] html_attributions { get; set; }
             public Result[] results { get; set; }
@@ -81,4 +80,4 @@
 
 
     }
-}
+

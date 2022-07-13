@@ -13,5 +13,9 @@ namespace WelliDO.Controllers
         { 
             return View();
         }
+        public IActionResult Drink()
+        {
+            return View();
+        }
     }
 }

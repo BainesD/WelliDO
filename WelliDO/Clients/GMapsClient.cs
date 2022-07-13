@@ -5,32 +5,37 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using WelliDO.Configs;
-using WelliDO.APIResponses;
+using WelliDO.APIResponses.GMapsResponses;
+using System.Linq;
 
 namespace WelliDO.Clients
 {
     public class GMapsClient
     {
-        public GMapsClient()
-        {
+        private readonly string _url;
+        private readonly string _apikey;
+        private readonly HttpClient _client = new HttpClient();
 
-        }
         public GMapsClient(GMapsConfiguration config)
         {
             _url = config.GetUrl();
             _apikey = config.GetAPIKey();
         }
+        
 
-        private readonly string _url;
-        private readonly string _apikey;
-        private readonly HttpClient _client = new HttpClient();
+        private string GetURLNearby(string location, string radius) => $"{_url}nearbysearch/json?location={location}&radius={radius}&key={_apikey}";
 
-        private string GetURLNearby(string location, string radius, string type) => $"{_url}nearbysearch/json?location={location}&radius={radius}&type={type}&key={_apikey}";
-
-        public async Task<GMapsResponseNearbySearch> GetNearbySearchAsync(string location, string radius, string type) 
+        public async Task<GMapsNearbySearchResponse> GetNearbySearchAsync(float lat, float lon, string radius) 
         {
-            var response = await _client.GetStringAsync(GetURLNearby(location,radius, type));
-            return response == null ? null! : JsonSerializer.Deserialize<GMapsResponseNearbySearch>(response)!;
+
+            var location = LocationParser(lat, lon);
+            var response = await _client.GetStringAsync(GetURLNearby(location,radius));
+            return response == null ? null! : JsonSerializer.Deserialize<GMapsNearbySearchResponse>(response)!;
+        }
+
+        public static string LocationParser(float lat, float lon)
+        { 
+            return $"{lat}%2C{lon}";
         }
 
 

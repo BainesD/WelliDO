@@ -49,7 +49,6 @@ Google Place: Supported types
     insurance_agency
     jewelry_store
     laundry
-
     lawyer
     library
     light_rail_station

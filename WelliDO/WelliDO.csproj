@@ -21,4 +21,8 @@
     <PackageReference Include="Syncfusion.Licensing" Version="20.2.0.38" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WelliDOClassLibrary\WelliDOClassLibrary.csproj" />
+  </ItemGroup>
+
 </Project>
