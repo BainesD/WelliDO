@@ -2,6 +2,8 @@
 using WelliDO.Configs;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using WelliDO.APIResponses.GMapsResponses;
 
 namespace WelliDO.Models
 
@@ -14,8 +16,11 @@ namespace WelliDO.Models
 
         public static float Lat = _ipDataClient.GetIPData().Result.latitude;
         public static float Lon = _ipDataClient.GetIPData().Result.longitude;
-        //public string Location { get; set; }
-        public static string Radius { get; set; } = "1609";
+        public static Result[] Results { get; set; } = GetNearbyLocations("food");//need keyword input from forms
+        public static string Radius { get; set; } = "1609.34";
+
+
+       
         //public string Name { get; set; }
         //public string Distance { get; set; }
         //public string Keyword { get; set; }
@@ -58,9 +63,18 @@ namespace WelliDO.Models
                 resultNames.Add(result.name);
             }
             return resultNames;
-
         }
 
-        
+        public static Result[] GetNearbyLocations(string keyword)
+        {
+            var response = _gMapsClient.GetNearbySearchWKeywordAsync(Lat, Lon, Radius, keyword).Result;
+            return response.results;
+        }
+        public static double RadiusToMileParser(string radiusAsString)
+        {
+            var radiusTester = Double.TryParse(radiusAsString, out double radius);
+            return Math.Round((radius * 0.000621),0);
+
+        }
     }
 }
