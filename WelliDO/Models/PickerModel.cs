@@ -48,9 +48,21 @@ namespace WelliDO.Models
             #endregion
 
         }
-        public static IEnumerable<string> GetNearbyPlaceNames()
+        public static IEnumerable<string> GetNearbyPlaceNamesFood()
         {
-            var response = _gMapsClient.GetNearbySearchAsync(Lat, Lon, Radius).Result;
+            var response = _gMapsClient.GetNearbySearchAsyncFood(Lat, Lon, Radius).Result;
+            var results = response.results;
+            List<string> resultNames = new List<string>();
+            foreach (var result in results)
+            {
+                resultNames.Add(result.name);
+            }
+            return resultNames;
+
+        }
+        public static IEnumerable<string> GetNearbyPlaceNamesDrink()
+        {
+            var response = _gMapsClient.GetNearbySearchAsyncDrink(Lat, Lon, Radius).Result;
             var results = response.results;
             List<string> resultNames = new List<string>();
             foreach (var result in results)
@@ -61,6 +73,6 @@ namespace WelliDO.Models
 
         }
 
-        
+
     }
 }

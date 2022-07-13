@@ -1,4 +1,5 @@
-﻿@*
+﻿@using WelliDO.Models
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
@@ -9,7 +10,7 @@
 @*<h1 class="text-center">This is where Food will go</h1>*@
 <h2 class="text-center">Here is a list of places within 1 mile of you</h2>
 <ul class="list-group">
-    @foreach(var name in PickerModel.GetNearbyPlaceNames())
+    @foreach(var name in PickerModel.GetNearbyPlaceNamesFood())
         {
             <li class="list-group-item">@name</li>
         }
