@@ -3,7 +3,8 @@ using WelliDO.Configs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using WelliDO.APIResponses.GMapsResponses;
+using WelliDO.APIResponses.GMapsPlaceDetailsResponse;
+using WelliDO.APIResponses;
 
 namespace WelliDO.Models
 
@@ -16,8 +17,9 @@ namespace WelliDO.Models
 
         public static float Lat = _ipDataClient.GetIPData().Result.latitude;
         public static float Lon = _ipDataClient.GetIPData().Result.longitude;
-        public static Result[] Results { get; set; } = GetNearbyLocations("food");//need keyword input from forms
-        public static string Radius { get; set; } = "1609.34";
+        public static NBResult[] Results { get; set; } = GetNearbyLocations("food");//need keyword input from forms
+        public static string Radius { get; set; } = "8046.72";
+        
 
 
        
@@ -53,6 +55,11 @@ namespace WelliDO.Models
             #endregion
 
         }
+        public static string GetPhotoURL(string reference)
+        {
+            return _gMapsClient.CallPhotoAPI(reference);
+        }
+
         public static IEnumerable<string> GetNearbyPlaceNames()
         {
             var response = _gMapsClient.GetNearbySearchAsync(Lat, Lon, Radius).Result;
@@ -65,7 +72,12 @@ namespace WelliDO.Models
             return resultNames;
         }
 
-        public static Result[] GetNearbyLocations(string keyword)
+        public static PlaceResult GetPlaceDetails(string placeID)
+        {
+            var response = _gMapsClient.GetPlaceDetailsAsync(placeID).Result;
+            return response.result;
+        }
+        public static NBResult[] GetNearbyLocations(string keyword)
         {
             var response = _gMapsClient.GetNearbySearchWKeywordAsync(Lat, Lon, Radius, keyword).Result;
             return response.results;

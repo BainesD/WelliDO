@@ -25,4 +25,8 @@
     <ProjectReference Include="..\WelliDOClassLibrary\WelliDOClassLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\css\cards\images\" />
+  </ItemGroup>
+
 </Project>
