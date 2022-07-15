@@ -27,7 +27,7 @@ namespace WelliDO.Clients
         public string CallPhotoAPI(string photoRefeerence) => $"{_photourlbase}?maxwidth=400&photo_reference={photoRefeerence}&key={_apikey}";
         private string GetURLNearby(string location, string radius) => $"{_url}nearbysearch/json?location={location}&radius={radius}&key={_apikey}";
         private string GetURLNearby(string location, string radius, string keyword) => $"{_url}nearbysearch/json?keyword={keyword}&location={location}&radius={radius}&key={_apikey}";
-        private string GetPlaceDetails(string placeID) => $"{_url}details/json?place_id={placeID}&fields=name%2Cformatted_address%2Cphotos%2C&key={_apikey}";
+        private string GetPlaceDetails(string placeID) => $"{_url}details/json?place_id={placeID}&fields=name%2Cformatted_address%2Cphotos&key={_apikey}";
 
 
         public async Task<GMapsPlaceDetailsResponse> GetPlaceDetailsAsync(string placeid)

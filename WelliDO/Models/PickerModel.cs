@@ -2,9 +2,8 @@
 using WelliDO.Configs;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using WelliDO.APIResponses.GMapsPlaceDetailsResponse;
 using WelliDO.APIResponses;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WelliDO.Models
 
@@ -17,17 +16,27 @@ namespace WelliDO.Models
 
         public static float Lat = _ipDataClient.GetIPData().Result.latitude;
         public static float Lon = _ipDataClient.GetIPData().Result.longitude;
-        public static NBResult[] Results { get; set; } = GetNearbyLocations("food");//need keyword input from forms
+
+        [BindProperty]
         public static string Radius { get; set; } = "8046.72";
+      
         
+        public static NBResult[] Results { get; set; } = GetNearbyLocations("locally owned food");//need keyword input from forms
+        public static List<string> placeIDs { get; set; } = GetListOfPlaceIDs();
+        public static List<PlaceResult> Places { get; set; } = GetListOfPlaceDetails();
 
 
-       
-        //public string Name { get; set; }
-        //public string Distance { get; set; }
-        //public string Keyword { get; set; }
+    public static List<string> GetListOfPlaceIDs()
+        {
+            List<string> placeIDs = new List<string>();
+            foreach(var result in Results)
+            {
+                var placeID = result.place_id;
+                placeIDs.Add(placeID);
+            }
+            return placeIDs;
 
-    
+        }
         public static string GetMealName()
         {
             #region Specific Time of Day vars
@@ -72,10 +81,16 @@ namespace WelliDO.Models
             return resultNames;
         }
 
-        public static PlaceResult GetPlaceDetails(string placeID)
+        public static List<PlaceResult> GetListOfPlaceDetails()
         {
-            var response = _gMapsClient.GetPlaceDetailsAsync(placeID).Result;
-            return response.result;
+            List<PlaceResult> placeResults = new List<PlaceResult>();
+            foreach (var placeID in placeIDs)
+            {
+               var response = _gMapsClient.GetPlaceDetailsAsync(placeID).Result;
+                placeResults.Add(response.result);
+            }
+            return placeResults;
+            
         }
         public static NBResult[] GetNearbyLocations(string keyword)
         {
