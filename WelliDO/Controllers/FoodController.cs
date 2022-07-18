@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WelliDO.Clients;
 
 namespace WelliDO.Controllers
 {
-    public class PickerController : Controller
+    public class FoodController : Controller
     {
         public IActionResult Index()
         {
             return View();
         }
-        public IActionResult Drink()
+        public IActionResult Options()
         {
             return View();
         }

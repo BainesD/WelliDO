@@ -2,6 +2,8 @@
 using WelliDO.Configs;
 using System;
 using System.Collections.Generic;
+using WelliDO.APIResponses;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WelliDO.Models
 
@@ -14,13 +16,27 @@ namespace WelliDO.Models
 
         public static float Lat = _ipDataClient.GetIPData().Result.latitude;
         public static float Lon = _ipDataClient.GetIPData().Result.longitude;
-        //public string Location { get; set; }
-        public static string Radius { get; set; } = "1609";
-        //public string Name { get; set; }
-        //public string Distance { get; set; }
-        //public string Keyword { get; set; }
 
-    
+        [BindProperty]
+        public static string Radius { get; set; } = "8046.72";
+      
+        
+        public static NBResult[] Results { get; set; } = GetNearbyLocations("locally owned food");//need keyword input from forms
+        public static List<string> placeIDs { get; set; } = GetListOfPlaceIDs();
+        public static List<PlaceResult> Places { get; set; } = GetListOfPlaceDetails();
+
+
+    public static List<string> GetListOfPlaceIDs()
+        {
+            List<string> placeIDs = new List<string>();
+            foreach(var result in Results)
+            {
+                var placeID = result.place_id;
+                placeIDs.Add(placeID);
+            }
+            return placeIDs;
+
+        }
         public static string GetMealName()
         {
             #region Specific Time of Day vars
@@ -48,9 +64,14 @@ namespace WelliDO.Models
             #endregion
 
         }
-        public static IEnumerable<string> GetNearbyPlaceNamesFood()
+        public static string GetPhotoURL(string reference)
         {
-            var response = _gMapsClient.GetNearbySearchAsyncFood(Lat, Lon, Radius).Result;
+            return _gMapsClient.CallPhotoAPI(reference);
+        }
+
+        public static IEnumerable<string> GetNearbyPlaceNames()
+        {
+            var response = _gMapsClient.GetNearbySearchAsync(Lat, Lon, Radius).Result;
             var results = response.results;
             List<string> resultNames = new List<string>();
             foreach (var result in results)
@@ -58,21 +79,29 @@ namespace WelliDO.Models
                 resultNames.Add(result.name);
             }
             return resultNames;
-
         }
-        public static IEnumerable<string> GetNearbyPlaceNamesDrink()
+
+        public static List<PlaceResult> GetListOfPlaceDetails()
         {
-            var response = _gMapsClient.GetNearbySearchAsyncDrink(Lat, Lon, Radius).Result;
-            var results = response.results;
-            List<string> resultNames = new List<string>();
-            foreach (var result in results)
+            List<PlaceResult> placeResults = new List<PlaceResult>();
+            foreach (var placeID in placeIDs)
             {
-                resultNames.Add(result.name);
+               var response = _gMapsClient.GetPlaceDetailsAsync(placeID).Result;
+                placeResults.Add(response.result);
             }
-            return resultNames;
+            return placeResults;
+            
+        }
+        public static NBResult[] GetNearbyLocations(string keyword)
+        {
+            var response = _gMapsClient.GetNearbySearchWKeywordAsync(Lat, Lon, Radius, keyword).Result;
+            return response.results;
+        }
+        public static double RadiusToMileParser(string radiusAsString)
+        {
+            var radiusTester = Double.TryParse(radiusAsString, out double radius);
+            return Math.Round((radius * 0.000621),0);
 
         }
-
-
     }
 }
