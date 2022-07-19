@@ -6226,10 +6226,10 @@ a.close.disabled {
 }
 
 .carousel-inner {
-  position: center;
-  width: 100%;
-  max-height: 200px;
-  overflow: hidden;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    max-height: 250px;
 }
 
 .carousel-inner::after {

@@ -3,29 +3,33 @@
 }
 
 <h1 class="text-center">Tell me more about what you're looking for</h1>
+<div class="text-center">
+    <br/>
+    @using (Html.BeginForm("Options", "Food", FormMethod.Post))
+    {
+        <div>Search: @Html.TextBoxFor(m => m.Keywords)</div>
+        
 
-@using (Html.BeginForm("Options","Food",FormMethod.Post))
-{
-    @Html.TextBoxFor(m => m.Keywords)
-    @Html.ValueFor(m=>m.Radius)
 
-}
+    }
+</div>
+
 
 @*<form>
     <div class="row mb-3"
-      <label for="exampleFormControlInput1" class="form-label">Keyword Search</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Keywords">
-        </div>
-     </div>
-    <div class="row mb-3"
-        <div class="form-group">
-            <label for="formControlRange">Radius</label>
-                    <input type="range" class="form-control-range" value="5" min="0" max="30" step=".5" oninput="this.nextElementSibling.value = this.value" id="formControlRange">
-                    <output>5</output>
-        </div>
-     </div>
+    <label for="exampleFormControlInput1" class="form-label">Keyword Search</label>
+    <div class="col-sm-10">
+    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Keywords">
     </div>
-</form>*@
+    </div>
+    <div class="row mb-3"
+    <div class="form-group">
+    <label for="formControlRange">Radius</label>
+    <input type="range" class="form-control-range" value="5" min="0" max="30" step=".5" oninput="this.nextElementSibling.value = this.value" id="formControlRange">
+    <output>5</output>
+    </div>
+    </div>
+    </div>
+    </form>*@
 
 

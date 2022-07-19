@@ -43,7 +43,7 @@
                         </div>*@
                                     <div>
                                         <div class="row">
-                                            <div id="@($"carouselControls{p}")" class="carousel slide" data-ride="carousel">
+                                            <div id="@($"carouselControls{p}")" class="carousel slide" data-interval="false">
 
                                                 <div class="carousel-inner">
                                                     @if (place.photos != null)
@@ -61,7 +61,7 @@
                                                     else
                                                     {
                                                         <div class="carousel-item active">
-                                                            <a href="#"><img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2048px-No_image_available.svg.png" /></a>
+                                                            <a href="#"><img class="img-fluid" src="~/css/images/No_image_available.png" /></a>
                                                         </div>
                                                     }
                                                 </div>
@@ -82,14 +82,30 @@
                                     </div>
                                     <!-- Card header -->
                                     <div class="card-header" role="tab" id="@($"headingOne{p}")">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEx" href="#@($"collapseOne{p}")" aria-expanded="true" aria-controls="collapseOne1">
-                                            Address
-                                        </a>
+                                        <table class="table">
+                                            <tr>
+                                                <td>
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEx" href="#@($"collapseOne{p}")" aria-expanded="true" aria-controls="collapseOne1">
+                                                        <img style="width:25px;" src="~/css/images/address-icon.png">
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEx" href="#@($"collapseTwo{p}")" aria-expanded="true" aria-controls="collapseOne1">
+                                                        <img style="width:25px;" src="~/css/images/google-maps.png">
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
                                     <!-- Card body -->
                                     <div id="@($"collapseOne{p}")" class="collapse" role="tabpanel" aria-labelledby="@($"headingOne{p}")" data-parent="#accordionEx">
                                         <div class="card-body">
                                             @(place.formatted_address)
+                                        </div>
+                                    </div>
+                                    <div id="@($"collapseTwo{p}")" class="collapse" role="tabpanel" aria-labelledby="@($"headingOne{p}")" data-parent="#accordionEx">
+                                        <div class="card-body">
+                                            <a href="@place.url">Get Directions!</a>
                                         </div>
                                     </div>
                                 </div>
