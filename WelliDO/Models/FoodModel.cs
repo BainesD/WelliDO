@@ -6,27 +6,43 @@ using WelliDO.APIResponses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WelliDO.Models
-
 {
-    public class PickerModel
-    {
+    public class FoodModel
 
+    {
+        public FoodModel()
+        {
+
+        }
         private static GMapsClient _gMapsClient = new GMapsClient(new GMapsConfiguration());
         private static IPDataClient _ipDataClient = new IPDataClient(new IPDataConfiguration());
 
         public static float Lat = _ipDataClient.GetIPData().Result.latitude;
         public static float Lon = _ipDataClient.GetIPData().Result.longitude;
-        public static string Radius { get; set; } = "8046.72";
+        public string Radius { get; set; } = "8069.9";
+        public string Keywords { get; set; }
 
-        public static NBResult[] Results { get; set; } = GetNearbyLocations("local");//need keyword input from forms
-        public static List<string> placeIDs { get; set; } = GetListOfPlaceIDs();
-        public static List<PlaceResult> Places { get; set; } = GetListOfPlaceDetails();
+        
+
+        public NBResult[] Results { get; set; } 
+        public List<string> placeIDs { get; set; } 
+        public List<PlaceResult> Places { get; set; } 
 
 
-    public static List<string> GetListOfPlaceIDs()
+        public static void StoreUserInputs(FoodModel model)
+        {
+            model.Results = GetNearbyLocations(model);
+            model.placeIDs = GetListOfPlaceIDs(model);
+            model.Places = GetListOfPlaceDetails(model);
+                }
+        public static string GetPhotoURL(string reference)
+        {
+            return _gMapsClient.CallPhotoAPI(reference);
+        }
+        public static List<string> GetListOfPlaceIDs(FoodModel model)
         {
             List<string> placeIDs = new List<string>();
-            foreach(var result in Results)
+            foreach (var result in model.Results)
             {
                 var placeID = result.place_id;
                 placeIDs.Add(placeID);
@@ -43,7 +59,7 @@ namespace WelliDO.Models
             var sixAM = new TimeSpan(6, 0, 0);
             var nineAM = new TimeSpan(9, 0, 0);
             var threePM = new TimeSpan(15, 0, 0);
-            var tenPM = new TimeSpan(22,0,0);
+            var tenPM = new TimeSpan(22, 0, 0);
             #endregion
 
             #region IF Statements
@@ -61,11 +77,9 @@ namespace WelliDO.Models
             #endregion
 
         }
-        
-
-        public static IEnumerable<string> GetNearbyPlaceNames()
+        public static IEnumerable<string> GetNearbyPlaceNames(FoodModel model)
         {
-            var response = _gMapsClient.GetNearbySearchAsync(Lat, Lon, Radius).Result;
+            var response = _gMapsClient.GetNearbySearchAsync(Lat, Lon, model.Radius).Result;
             var results = response.results;
             List<string> resultNames = new List<string>();
             foreach (var result in results)
@@ -75,26 +89,26 @@ namespace WelliDO.Models
             return resultNames;
         }
 
-        public static List<PlaceResult> GetListOfPlaceDetails()
+        public static List<PlaceResult> GetListOfPlaceDetails(FoodModel model)
         {
             List<PlaceResult> placeResults = new List<PlaceResult>();
-            foreach (var placeID in placeIDs)
+            foreach (var placeID in model.placeIDs)
             {
-               var response = _gMapsClient.GetPlaceDetailsAsync(placeID).Result;
+                var response = _gMapsClient.GetPlaceDetailsAsync(placeID).Result;
                 placeResults.Add(response.result);
             }
             return placeResults;
-            
+
         }
-        public static NBResult[] GetNearbyLocations(string keyword)
+        public static NBResult[] GetNearbyLocations(FoodModel model)
         {
-            var response = _gMapsClient.GetNearbySearchWKeywordAsync(Lat, Lon, Radius, keyword).Result;
+            var response = _gMapsClient.GetNearbySearchWKeywordAsync(Lat, Lon, model.Radius, $"Local Food {model.Keywords}").Result;
             return response.results;
         }
         public static double RadiusToMileParser(string radiusAsString)
         {
             var radiusTester = Double.TryParse(radiusAsString, out double radius);
-            return Math.Round((radius * 0.000621),0);
+            return Math.Round((radius * 0.000621), 0);
 
         }
     }

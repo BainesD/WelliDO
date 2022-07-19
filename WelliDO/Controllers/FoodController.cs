@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WelliDO.Models;
 
 namespace WelliDO.Controllers
 {
@@ -8,9 +9,15 @@ namespace WelliDO.Controllers
         {
             return View();
         }
-        public IActionResult Options()
+        [HttpPost]
+        public IActionResult Options(FoodModel model)
         {
-            return View();
+            if(ModelState.IsValid)
+            {
+                FoodModel.StoreUserInputs(model);
+            }
+            return View("Options", model);
         }
+
     }
 }

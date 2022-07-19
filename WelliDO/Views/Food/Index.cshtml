@@ -1,10 +1,15 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model FoodModel;
 @{
 }
 
 <h1 class="text-center">Tell me more about what you're looking for</h1>
+
+@using (Html.BeginForm("Options","Food",FormMethod.Post))
+{
+    @Html.TextBoxFor(m => m.Keywords)
+    @Html.ValueFor(m=>m.Radius)
+
+}
 
 @*<form>
     <div class="row mb-3"

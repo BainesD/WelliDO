@@ -477,8 +477,11 @@ mark,
 }
 
 .img-fluid {
-  max-width: 100%;
-  height: auto;
+  max-width:100%;
+  object-fit: contain;
+  max-height: 100%;
+  width: 100px;
+  height: 100px;
 }
 
 .img-thumbnail {
@@ -487,7 +490,7 @@ mark,
   border: 1px solid #dee2e6;
   border-radius: 0.25rem;
   max-width: 100%;
-  height: auto;
+  height: 100%;
 }
 
 .figure {
@@ -6223,8 +6226,9 @@ a.close.disabled {
 }
 
 .carousel-inner {
-  position: relative;
+  position: center;
   width: 100%;
+  max-height: 200px;
   overflow: hidden;
 }
 
@@ -6235,16 +6239,18 @@ a.close.disabled {
 }
 
 .carousel-item {
-  position: relative;
+  position: center;
   display: none;
-  float: left;
+  float: none;
   width: 100%;
+  max-height:100px;
   margin-right: -100%;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   transition: -webkit-transform 0.6s ease-in-out;
   transition: transform 0.6s ease-in-out;
   transition: transform 0.6s ease-in-out, -webkit-transform 0.6s ease-in-out;
+  object-fit: cover;
 }
 
 @media (prefers-reduced-motion: reduce) {
