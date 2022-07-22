@@ -18,6 +18,14 @@ namespace WelliDO.Controllers
             }
             return View("Options", model);
         }
+        public IActionResult Lucky(FoodModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                FoodModel.StoreUserInputs(model);
+            }
+            return View("Lucky", model);
+        }
 
     }
 }

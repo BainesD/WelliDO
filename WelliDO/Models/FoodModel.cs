@@ -14,23 +14,29 @@ namespace WelliDO.Models
         {
 
         }
+        #region API Client calls
         private static GMapsClient _gMapsClient = new GMapsClient(new GMapsConfiguration());
         private static IPDataClient _ipDataClient = new IPDataClient(new IPDataConfiguration());
+        #endregion
 
+        #region Model Environment
         public static float Lat = _ipDataClient.GetIPData().Result.latitude;
         public static float Lon = _ipDataClient.GetIPData().Result.longitude;
         public string Radius { get; set; } = "8069.9";
         public string Keywords { get; set; }
 
-        
+        //public enum RandomKeyword {Burgers, Tacos, Donuts, Sushi, Pizza }
+        #endregion
 
+        #region API Response Object Containers
         public NBResult[] Results { get; set; } 
         public List<string> placeIDs { get; set; } 
-        public List<PlaceResult> Places { get; set; } 
-
+        public List<PlaceResult> Places { get; set; }
+        #endregion
 
         public static void StoreUserInputs(FoodModel model)
         {
+            model.Radius = RadiusMilesToMeters(Convert.ToDouble(model.Radius));
             model.Results = GetNearbyLocations(model);
             model.placeIDs = GetListOfPlaceIDs(model);
             model.Places = GetListOfPlaceDetails(model);
@@ -110,6 +116,10 @@ namespace WelliDO.Models
             var radiusTester = Double.TryParse(radiusAsString, out double radius);
             return Math.Round((radius * 0.000621), 0);
 
+        }
+        public static string RadiusMilesToMeters(double radius)
+        {
+            return (radius * 1609.344).ToString();
         }
     }
 }

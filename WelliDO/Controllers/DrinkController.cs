@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WelliDO.Clients;
 
 namespace WelliDO.Controllers
 {
-    public class PickerController : Controller
+    public class DrinkController : Controller
     {
         public IActionResult Index()
         {

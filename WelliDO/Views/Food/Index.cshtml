@@ -1,35 +1,37 @@
 ﻿@model FoodModel;
 @{
+
 }
+@*</div>
+<div class="container-fluid" style="padding:0px">*@
 
-<h1 class="text-center">Tell me more about what you're looking for</h1>
-<div class="text-center">
-    <br/>
-    @using (Html.BeginForm("Options", "Food", FormMethod.Post))
-    {
-        <div>Search: @Html.TextBoxFor(m => m.Keywords)</div>
-        
+<body style="background-image:url(css/images/FoodBackground.jpg)">
+    <div class="container-fluid flex-fill" style="background-color:white; border-radius: 9px; padding: 10px; width:102%; padding-right:19px;">
+        <div class="d-flex justify-content-center">
+            <h1 style="width:795px; background-color:rgba(10, 10, 255, .2); border-radius:15px; padding-bottom:2px;" class="text-center container-fluid">Tell me more about what you're looking for</h1>
+        </div>
+        <div class="text-center">
+            <br />
+            @using (Html.BeginForm("Options", "Food", FormMethod.Post, new { style = "padding:5px;" }))
+            {
+                <div class="form-row align-items-center container-fluid" style="background-color:rgba(10, 10, 255, .2); padding:5px; border-radius:8px; margin:0px;">
+                    <div class="col-form-label col-sm-1" style="float:right;">Search:</div>
+                    <div class="col-sm-11">
+                        @Html.TextBoxFor(m => m.Keywords, new{style="border-radius:8px; width:inherit;", placeholder="Search Keywords", })
+                        @Html.ValidationMessage("Keywords")
+                    </div>
+                </div>
+                <br />
+                <div class="form-row align-items-center" style="background-color:rgba(10, 10, 255, .2); border-radius:8px; margin:0px;">
+                    <div class="col-form-label col-sm-1">Radius:</div>
+                    <input id="Radius" name="Radius" type="Range" class="form-control-range col-sm-9" value="5" min="0" max="30" step=".5" oninput="this.nextElementSibling.value = this.value"
+                       style="padding: 14px;margin-right: 15px; border-radius:4px; margin-right:5px;">
+                    <input disabled style="max-width:4%; margin-right:5px;" class="col-sm-1" type="text" id="texbox" value="5"> miles
+                </div>
+                <button class="btn btn-primary btn-lg" type="submit" style="margin-top:20px">Submit</button>
 
-
-    }
-</div>
-
-
-@*<form>
-    <div class="row mb-3"
-    <label for="exampleFormControlInput1" class="form-label">Keyword Search</label>
-    <div class="col-sm-10">
-    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Keywords">
+            }
+        </div>
     </div>
-    </div>
-    <div class="row mb-3"
-    <div class="form-group">
-    <label for="formControlRange">Radius</label>
-    <input type="range" class="form-control-range" value="5" min="0" max="30" step=".5" oninput="this.nextElementSibling.value = this.value" id="formControlRange">
-    <output>5</output>
-    </div>
-    </div>
-    </div>
-    </form>*@
-
+</body>
 
