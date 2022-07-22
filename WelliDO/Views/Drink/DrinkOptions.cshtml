@@ -1,0 +1,133 @@
+﻿@using WelliDO.APIResponses
+@model DrinkModel;
+
+@{
+    ViewBag.Title = "Nearby Options";
+    var radiusAsMiles = DrinkModel.RadiusToMileParser(Model.Radius).ToString();
+    List<PlaceResult> places = Model.Places;
+    int p = 1;
+
+}
+@*C:\Users\baine\OneDrive\Desktop\repos\WelliDO\WelliDO\wwwroot\css\images\starrysky.jpg*@
+
+<body style="background-image:url(/css/images/starrysky2.jpg); background-position: top; background-size:cover">
+    @if (places.Count() > 0)
+    {
+        <h2 class="text-center text-white" style="padding-top:20px">Here is a list of places within @radiusAsMiles miles of you</h2>
+
+        <div class="text-center">
+            @using (Html.BeginForm("DeinkLucky", "Drink", FormMethod.Post, new { style = "padding:5px;" }))
+            {
+                <input id="Keywords" name="Keywords" type="hidden" value="@Model.Keywords">
+                <input id="Radius" name="Radius" type="hidden" value="@radiusAsMiles">
+                <button class="btn" style="padding:5px;background-color:#dcc1ff; border-color:#dcc1ff" type="submit">I can't decide!</button>
+            }
+        </div>
+       
+        <div class="container">
+            <div class="row">
+
+                @foreach (var place in places)
+                {
+                    p++;
+                    @if (place != null)
+                    {
+                        <div class="col">
+                            <div class="card" style="width: 20rem; background-image:linear-gradient(to bottom right,#4b00ad ,#673aa3); box-shadow: 2px 2px 4px">
+                                <!--Accordion wrapper-->
+                                <div class="card-header text-center" style="-webkit-text-fill-color: white; background-image:linear-gradient(to bottom right,#4b00ad ,#673aa3)">
+                                    @place.name:
+                                </div>
+                                <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+                                    <!-- Accordion card -->
+                                    <div class="card">
+
+                                        <div>
+                                            <div class="row">
+                                                <div id="@($"carouselControls{p}")" class="carousel slide" data-interval="false">
+
+                                                    <div class="carousel-inner">
+                                                        @if (place.photos != null)
+                                                        {
+                                                            <div class="carousel-item active">
+                                                                <a href="#"><img class="img-fluid" src="@DrinkModel.GetPhotoURL(place.photos[0].photo_reference)" /></a>
+                                                            </div>
+                                                            @for (int i = 1; i < place.photos.Length; i++)
+                                                            {
+                                                                <div class="carousel-item">
+                                                                    <a href="#"><img class="img-fluid" src="@DrinkModel.GetPhotoURL(place.photos[i].photo_reference)" /></a>
+                                                                </div>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="carousel-item active">
+                                                                <a href="#"><img class="img-fluid" src="~/css/images/No_image_available.png" /></a>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <a class="carousel-control-prev" href="#@($"carouselControls{p}")" role="button" data-slide="prev">
+                                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
+                                                    <a class="carousel-control-next" href="#@($"carouselControls{p}")" role="button" data-slide="next">
+                                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                        <span class="sr-only">Next</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Card header -->
+                                        <div class="card-header" role="tab" id="@($"headingOne{p}")">
+                                            <table class="table">
+                                                <tr>
+                                                    <td>
+                                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEx" href="#@($"collapseOne{p}")" aria-expanded="true" aria-controls="collapseOne1">
+                                                            <img style="width:25px;" src="~/css/images/address-icon.png">
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEx" href="#@($"collapseTwo{p}")" aria-expanded="true" aria-controls="collapseOne1">
+                                                            <img style="width:25px;" src="~/css/images/google-maps.png">
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <!-- Card body -->
+                                        <div id="@($"collapseOne{p}")" class="collapse" role="tabpanel" aria-labelledby="@($"headingOne{p}")" data-parent="#accordionEx">
+                                            <div class="card-body">
+                                                @(place.formatted_address)
+                                            </div>
+                                        </div>
+                                        <div id="@($"collapseTwo{p}")" class="collapse" role="tabpanel" aria-labelledby="@($"headingOne{p}")" data-parent="#accordionEx">
+                                            <div class="card-body">
+                                                <a href="@place.url" target="_blank">Get Directions!</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+
+                    }
+
+                }
+            </div>
+        </div>
+    }
+
+    @if (places.Count() == 0)
+    {
+        <br />
+        <br />
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <h2 class="text-center mb-3">Sorry! That Search didn't return any options for food.</h2>
+        </div>
+    }
+
+
+</body>

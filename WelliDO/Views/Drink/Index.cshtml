@@ -2,5 +2,37 @@
 @{
     ViewBag.Title = "Drinks";
 }
+@model DrinkModel;
 
-<h2 class="text-center">Here is a list of places within 1 mile of you</h2>
+<body style="background-image: url(css/images/starrysky.jpg)">
+    <div class="container-fluid">
+        <h2 class="text-center text-white">Tell me more about what you're looking for?</h2>
+    </div>
+
+    <div class="text-center container-fluid">
+        <br />
+        @using (Html.BeginForm("DrinkOptions", "Drink", FormMethod.Post, new { style = "margin:auto; width:1000px" }))
+        {
+            <div class="form-row container-fluid align-items-center" style="margin:0px;">
+                <label class="col-form-label col-sm-2 text-white" for="Keywords" >Venue Types:</label>
+                <div class="col-sm-9">
+                    <select class="form-control" id="Keywords" name="Keywords" style="margin-left:-14px;">
+                        @foreach (var option in DrinkModel.UserOptions)
+                        {
+                            <option>@option</option>
+                        }
+                    </select>
+                    @Html.ValidationMessage("Keywords")
+                </div>
+            </div>
+            <div class="form-row align-items-center text-white" style="border-radius:8px; margin:0px;">
+                <div class="col-form-label col-sm-2 text-white">Radius:</div>
+                <input id="Radius" name="Radius" type="Range" class="form-control-range col-sm-8" value="5" min="0" max="30" step=".5" oninput="this.nextElementSibling.value = this.value"
+                   style="padding: 14px;margin-right: 15px; border-radius:4px;">
+                <input disabled style="max-width:4%; margin-right:5px; background-color:white" class="col-sm-1" type="text" id="texbox" value="5"> miles
+            </div>
+            <button class="btn btn-primary btn-lg" type="submit" style="">Submit</button>
+
+        }
+    </div>
+</body>
