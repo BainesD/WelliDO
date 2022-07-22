@@ -53,7 +53,7 @@ namespace WelliDO.Models
         }
         public static IEnumerable<string> GetNearbyPlaceNames(DrinkModel model)
         {
-            var response = _gMapsClient.GetNearbySearchAsync(Lat, Lon, model.Radius).Result;
+            var response = _gMapsClient.GetNearbySearchAsync(Lat, Lon, model.Radius, model.Keywords).Result;
             var results = response.results;
             List<string> resultNames = new List<string>();
             foreach (var result in results)

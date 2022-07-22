@@ -16,7 +16,7 @@
         <h2 class="text-center text-white" style="padding-top:20px">Here is a list of places within @radiusAsMiles miles of you</h2>
 
         <div class="text-center">
-            @using (Html.BeginForm("DeinkLucky", "Drink", FormMethod.Post, new { style = "padding:5px;" }))
+            @using (Html.BeginForm("DrinkLucky", "Drink", FormMethod.Post, new { style = "padding:5px;" }))
             {
                 <input id="Keywords" name="Keywords" type="hidden" value="@Model.Keywords">
                 <input id="Radius" name="Radius" type="hidden" value="@radiusAsMiles">

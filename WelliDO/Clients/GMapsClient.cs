@@ -35,11 +35,11 @@ namespace WelliDO.Clients
             var response = await _client.GetStringAsync(GetPlaceDetails(placeid));
             return response == null ? null! : JsonSerializer.Deserialize<GMapsPlaceDetailsResponse>(response)!;
         }
-        public async Task<GMapsNearbySearchResponse> GetNearbySearchAsync(float lat, float lon, string radius) 
+        public async Task<GMapsNearbySearchResponse> GetNearbySearchAsync(float lat, float lon, string radius, string keywords) 
         {
 
             var location = LocationParser(lat, lon);
-            var response = await _client.GetStringAsync(GetURLNearby(location, radius, "bar"));
+            var response = await _client.GetStringAsync(GetURLNearby(location, radius, keywords));
             return response == null ? null! : JsonSerializer.Deserialize<GMapsNearbySearchResponse>(response)!;
         }
         public async Task<GMapsNearbySearchResponse> GetNearbySearchWKeywordAsync(float lat, float lon, string radius, string keyword)
